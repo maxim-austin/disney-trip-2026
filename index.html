@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Disney World 2026 — Dad & Daughter Trip Planner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FFFBF5;
+  --bg-card: #FFFFFF;
+  --bg-accent: #FFF3E6;
+  --text: #2D2A26;
+  --text-muted: #7A756D;
+  --text-light: #A39E95;
+  --accent: #D4613E;
+  --accent-light: #F5D0C0;
+  --blue: #3B7DD8;
+  --blue-light: #E3EFFA;
+  --teal: #1D9E75;
+  --teal-light: #E1F5EE;
+  --purple: #6B5CA5;
+  --purple-light: #EEEDFE;
+  --gold: #C4940A;
+  --gold-light: #FFF8E6;
+  --border: #E8E3DB;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'DM Sans', -apple-system, sans-serif;
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+.container { max-width: 800px; margin: 0 auto; padding: 0 20px; }
+
+/* Hero */
+.hero {
+  background: linear-gradient(135deg, #1B2A4A 0%, #2D1B4E 50%, #1B2A4A 100%);
+  color: white;
+  padding: 60px 20px 50px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(circle at 20% 50%, rgba(212,97,62,0.15) 0%, transparent 50%),
+              radial-gradient(circle at 80% 30%, rgba(59,125,216,0.1) 0%, transparent 50%);
+}
+.hero-content { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; }
+.hero-stars {
+  font-size: 14px;
+  letter-spacing: 12px;
+  opacity: 0.4;
+  margin-bottom: 20px;
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 6vw, 48px);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+.hero-sub {
+  font-size: 17px;
+  opacity: 0.75;
+  font-weight: 400;
+  margin-bottom: 30px;
+}
+.hero-chips {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.hero-chip {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 100px;
+  padding: 6px 18px;
+  font-size: 13px;
+  font-weight: 500;
+  backdrop-filter: blur(4px);
+}
+
+/* Nav */
+.nav-bar {
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  padding: 0 20px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.nav-inner {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  gap: 4px;
+}
+.nav-link {
+  padding: 12px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-decoration: none;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+.nav-link:hover, .nav-link.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* Sections */
+section { padding: 48px 0; }
+.section-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 4vw, 32px);
+  font-weight: 700;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.section-desc {
+  color: var(--text-muted);
+  font-size: 15px;
+  margin-bottom: 32px;
+  max-width: 600px;
+}
+
+/* Cards */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 16px;
+}
+.card-sm { padding: 16px 20px; }
+
+/* Day Cards */
+.day-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.day-card:hover { border-color: #ccc; }
+.day-header {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  user-select: none;
+}
+.day-num {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.day-meta { flex: 1; min-width: 0; }
+.day-date { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+.day-title { font-size: 16px; font-weight: 600; }
+.day-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+.day-arrow {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s;
+  color: var(--text-light);
+}
+.day-card.open .day-arrow { transform: rotate(180deg); }
+.day-body {
+  display: none;
+  padding: 0 20px 20px;
+  border-top: 1px solid var(--border);
+}
+.day-card.open .day-body { display: block; padding-top: 20px; }
+
+.ride-list { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
+.ride {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 100px;
+  background: var(--bg-accent);
+  color: var(--accent);
+}
+.ride.hl { background: var(--blue-light); color: var(--blue); }
+.schedule-item {
+  display: flex;
+  gap: 12px;
+  padding: 8px 0;
+  font-size: 14px;
+  border-bottom: 1px solid #f3f0eb;
+}
+.schedule-item:last-child { border-bottom: none; }
+.sched-time {
+  font-weight: 600;
+  color: var(--accent);
+  min-width: 70px;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+.sched-desc { color: var(--text); }
+.sched-note { color: var(--text-muted); font-size: 13px; }
+.uber-note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-accent);
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: var(--accent);
+  margin-top: 16px;
+  font-weight: 500;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin: 24px 0;
+}
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  text-align: center;
+}
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+}
+.stat-label { font-size: 12px; color: var(--text-muted); margin-top: 2px; font-weight: 500; }
+
+/* Hotel Card */
+.hotel-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.hotel-top {
+  background: linear-gradient(135deg, #1D9E75, #15775A);
+  padding: 24px;
+  color: white;
+}
+.hotel-top h3 { font-family: var(--font-display); font-size: 22px; margin-bottom: 4px; }
+.hotel-top p { opacity: 0.8; font-size: 14px; }
+.hotel-perks {
+  padding: 20px 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.perk {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+}
+.perk-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--teal-light);
+  color: var(--teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.hotel-warn {
+  padding: 16px 24px;
+  background: #FFF8E6;
+  border-top: 1px solid #F0E4C0;
+  font-size: 13px;
+  color: #8B6F00;
+}
+
+/* Budget Table */
+.budget-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.budget-table th {
+  text-align: left;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  padding: 8px 0;
+  border-bottom: 2px solid var(--border);
+}
+.budget-table td {
+  padding: 12px 0;
+  border-bottom: 1px solid #f3f0eb;
+}
+.budget-table td:last-child { text-align: right; font-weight: 600; }
+.budget-total td {
+  border-bottom: none;
+  border-top: 2px solid var(--text);
+  font-size: 16px;
+  font-weight: 700;
+  padding-top: 16px;
+}
+
+/* Tips */
+.tip-card {
+  background: var(--bg-accent);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin-bottom: 12px;
+}
+.tip-title {
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 4px;
+  color: var(--accent);
+}
+.tip-text { font-size: 14px; color: var(--text); }
+
+/* Checklist */
+.check-group { margin-bottom: 24px; }
+.check-group-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--purple);
+  background: var(--purple-light);
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 100px;
+  margin-bottom: 10px;
+}
+.check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 0;
+  font-size: 14px;
+  cursor: pointer;
+}
+.check-box {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border);
+  border-radius: 4px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  font-size: 12px;
+  color: transparent;
+}
+.check-item.done .check-box {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: white;
+}
+.check-item.done .check-label { text-decoration: line-through; color: var(--text-muted); }
+
+/* Rides table */
+.ride-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.ride-table th {
+  text-align: left;
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  padding: 8px 6px;
+  border-bottom: 2px solid var(--border);
+}
+.ride-table td { padding: 10px 6px; border-bottom: 1px solid #f3f0eb; }
+.thrill-bar {
+  display: flex;
+  gap: 3px;
+}
+.thrill-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #E8E3DB;
+}
+.thrill-dot.on { background: var(--accent); }
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-light);
+  font-size: 13px;
+  border-top: 1px solid var(--border);
+}
+
+@media (max-width: 600px) {
+  .hotel-perks { grid-template-columns: 1fr; }
+  .hero { padding: 40px 20px 36px; }
+  .nav-link { padding: 12px 10px; font-size: 12px; }
+  section { padding: 36px 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="hero-content">
+    <div class="hero-stars">&#10039; &#10039; &#10039;</div>
+    <h1>Disney World 2026</h1>
+    <p class="hero-sub">A dad &amp; daughter adventure — May 8 to 13</p>
+    <div class="hero-chips">
+      <span class="hero-chip">4 park days</span>
+      <span class="hero-chip">Home2 Suites</span>
+      <span class="hero-chip">Uber everywhere</span>
+      <span class="hero-chip">~$3,400 total</span>
+    </div>
+  </div>
+</header>
+
+<!-- Nav -->
+<nav class="nav-bar">
+  <div class="nav-inner">
+    <a class="nav-link" href="#overview">Overview</a>
+    <a class="nav-link" href="#itinerary">Itinerary</a>
+    <a class="nav-link" href="#hotel">Hotel</a>
+    <a class="nav-link" href="#rides">Rides</a>
+    <a class="nav-link" href="#tickets">Tickets</a>
+    <a class="nav-link" href="#dining">Dining</a>
+    <a class="nav-link" href="#budget">Budget</a>
+    <a class="nav-link" href="#checklist">Checklist</a>
+    <a class="nav-link" href="#tips">Tips</a>
+  </div>
+</nav>
+
+<!-- Overview -->
+<section id="overview">
+  <div class="container">
+    <div class="section-label">Trip overview</div>
+    <div class="section-title">Five nights, four parks, one mission: maximum magic</div>
+    <div class="section-desc">Fly from Austin on Friday evening, spend Saturday through Tuesday in the parks, and fly home Wednesday morning. The busiest parks are on the quietest days.</div>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-value">4</div><div class="stat-label">Park days</div></div>
+      <div class="stat-card"><div class="stat-value">12</div><div class="stat-label">Headliner rides</div></div>
+      <div class="stat-card"><div class="stat-value">14</div><div class="stat-label">Uber rides</div></div>
+      <div class="stat-card"><div class="stat-value">~$3.4k</div><div class="stat-label">Est. total cost</div></div>
+    </div>
+
+    <div class="card" style="background:var(--blue-light);border-color:#c5d9ee;">
+      <div style="font-weight:600;color:var(--blue);font-size:15px;margin-bottom:4px;">Flight plan</div>
+      <div style="font-size:14px;color:#2A5B9A;">
+        <strong>May 8 (Fri):</strong> Depart Austin after 5 PM → arrive Orlando ~9:30 PM<br>
+        <strong>May 13 (Wed):</strong> Depart Orlando after 10 AM → home by early afternoon<br>
+        Southwest recommended — 4 daily nonstops, 2 free bags, family boarding. Est. $400–$700 round-trip for two.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Itinerary -->
+<section id="itinerary" style="background:var(--bg-accent);padding:48px 0;">
+  <div class="container">
+    <div class="section-label">Day by day</div>
+    <div class="section-title">Your itinerary</div>
+    <div class="section-desc">Tap any day to expand the full schedule. Weekday parks are the high-demand ones — that's intentional.</div>
+
+    <!-- Day 1 -->
+    <div class="day-card" onclick="toggleDay(this)">
+      <div class="day-header">
+        <div class="day-num" style="background:#E3EFFA;color:#185FA5;">1</div>
+        <div class="day-meta">
+          <div class="day-date">Friday, May 8</div>
+          <div class="day-title">Travel day</div>
+        </div>
+        <div class="day-badge" style="background:#F1EFE8;color:var(--text-muted);">No park</div>
+        <svg class="day-arrow" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"/></svg>
+      </div>
+      <div class="day-body">
+        <div class="schedule-item"><span class="sched-time">5–7 PM</span><span class="sched-desc">Depart Austin (Southwest nonstop)</span></div>
+        <div class="schedule-item"><span class="sched-time">~9:30 PM</span><span class="sched-desc">Arrive MCO → Uber to hotel (~$35, 25 min)</span></div>
+        <div class="schedule-item"><span class="sched-time">10:15 PM</span><span class="sched-desc">Check in at Home2 Suites Flamingo Crossings</span></div>
+        <div class="schedule-item"><span class="sched-time">10:30 PM</span><span class="sched-desc">Walk to Target for water, sunscreen, snacks. Dinner at Town Center.</span></div>
+      </div>
+    </div>
+
+    <!-- Day 2 -->
+    <div class="day-card" onclick="toggleDay(this)">
+      <div class="day-header">
+        <div class="day-num" style="background:#E1F5EE;color:#0F6E56;">2</div>
+        <div class="day-meta">
+          <div class="day-date">Saturday, May 9</div>
+          <div class="day-title">Animal Kingdom</div>
+        </div>
+        <div class="day-badge" style="background:#E1F5EE;color:#0F6E56;">Weekend park</div>
+        <svg class="day-arrow" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"/></svg>
+      </div>
+      <div class="day-body">
+        <div style="font-weight:600;font-size:14px;margin-bottom:8px;">Headliner rides:</div>
+        <div class="ride-list">
+          <span class="ride hl">Flight of Passage</span>
+          <span class="ride hl">Expedition Everest</span>
+          <span class="ride">Na'vi River Journey</span>
+          <span class="ride">Kilimanjaro Safaris</span>
+          <span class="ride">Kali River Rapids</span>
+        </div>
+        <div style="font-weight:600;font-size:14px;margin:16px 0 8px;">Schedule:</div>
+        <div class="schedule-item"><span class="sched-time">7:00 AM</span><span class="sched-desc">Uber to Animal Kingdom (~$14, 8 min)</span></div>
+        <div class="schedule-item"><span class="sched-time">8:00 AM</span><span class="sched-desc">Rope drop — sprint to Flight of Passage, then Na'vi River Journey</span></div>
+        <div class="schedule-item"><span class="sched-time">9:30 AM</span><span class="sched-desc">Kilimanjaro Safaris → Expedition Everest → Kali River Rapids</span></div>
+        <div class="schedule-item"><span class="sched-time">11:00 AM</span><span class="sched-desc">Festival of the Lion King show (air-conditioned)</span></div>
+        <div class="schedule-item"><span class="sched-time">12:00 PM</span><span class="sched-desc">Lunch at Satu'li Canteen (mobile order). Uber to hotel for pool break.</span></div>
+        <div class="schedule-item"><span class="sched-time">2:30 PM</span><span class="sched-desc">Uber back. Re-ride Everest, Finding Nemo show, Maharajah Jungle Trek.</span></div>
+        <div class="schedule-item"><span class="sched-time">5:00 PM</span><span class="sched-desc">Second Kilimanjaro Safaris (golden-hour light)</span></div>
+        <div class="schedule-item"><span class="sched-time">6:00 PM</span><span class="sched-desc">Dinner at Flame Tree Barbecue</span></div>
+        <div class="schedule-item"><span class="sched-time">7:30 PM</span><span class="sched-desc">Pandora at dusk (bioluminescent glow) → Uber home</span></div>
+        <div class="uber-note">&#9679; Midday hotel break via Uber: ~$28 round-trip. AK is the closest park at 8 min.</div>
+      </div>
+    </div>
+
+    <!-- Day 3 -->
+    <div class="day-card" onclick="toggleDay(this)">
+      <div class="day-header">
+        <div class="day-num" style="background:#EEEDFE;color:#534AB7;">3</div>
+        <div class="day-meta">
+          <div class="day-date">Sunday, May 10</div>
+          <div class="day-title">EPCOT</div>
+        </div>
+        <div class="day-badge" style="background:#EEEDFE;color:#534AB7;">Mother's Day</div>
+        <svg class="day-arrow" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"/></svg>
+      </div>
+      <div class="day-body">
+        <div style="font-weight:600;font-size:14px;margin-bottom:8px;">Headliner rides:</div>
+        <div class="ride-list">
+          <span class="ride hl">Guardians: Cosmic Rewind</span>
+          <span class="ride hl">Test Track</span>
+          <span class="ride">Frozen Ever After</span>
+          <span class="ride">Remy's Ratatouille</span>
+          <span class="ride">Soarin'</span>
+        </div>
+        <div style="font-weight:600;font-size:14px;margin:16px 0 8px;">Schedule (no hotel break — rest in park):</div>
+        <div class="schedule-item"><span class="sched-time">7:30 AM</span><span class="sched-desc">Uber to EPCOT (~$18, 12 min)</span></div>
+        <div class="schedule-item"><span class="sched-time">9:00 AM</span><span class="sched-desc">Rope drop — Frozen Ever After or Guardians first</span></div>
+        <div class="schedule-item"><span class="sched-time">10:00 AM</span><span class="sched-desc">Test Track → Soarin' → Spaceship Earth → Seas with Nemo</span></div>
+        <div class="schedule-item"><span class="sched-time">12:00 PM</span><span class="sched-desc">Flower &amp; Garden Festival grazing + Spike scavenger hunt</span></div>
+        <div class="schedule-item"><span class="sched-time">1:00 PM</span><span class="sched-desc">In-park rest: The Seas pavilion or The Land (air-conditioned)</span></div>
+        <div class="schedule-item"><span class="sched-time">2:30 PM</span><span class="sched-desc">World Showcase: Mexico → Japan → Germany → France → UK</span></div>
+        <div class="schedule-item"><span class="sched-time">4:00 PM</span><span class="sched-desc">Remy's Ratatouille + meet Anna &amp; Elsa in Norway</span></div>
+        <div class="schedule-item"><span class="sched-time">5:30 PM</span><span class="sched-desc">Character dinner (Garden Grill or Akershus)</span></div>
+        <div class="schedule-item"><span class="sched-time">9:00 PM</span><span class="sched-desc">Luminous fireworks → Uber home</span></div>
+        <div class="uber-note">&#9679; No hotel break today. EPCOT is large with many air-conditioned rest spots.</div>
+      </div>
+    </div>
+
+    <!-- Day 4 -->
+    <div class="day-card" onclick="toggleDay(this)">
+      <div class="day-header">
+        <div class="day-num" style="background:#FAECE7;color:#993C1D;">4</div>
+        <div class="day-meta">
+          <div class="day-date">Monday, May 11</div>
+          <div class="day-title">Hollywood Studios</div>
+        </div>
+        <div class="day-badge" style="background:#FAECE7;color:#993C1D;">Weekday — less crowded</div>
+        <svg class="day-arrow" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"/></svg>
+      </div>
+      <div class="day-body">
+        <div style="font-weight:600;font-size:14px;margin-bottom:8px;">Headliner rides:</div>
+        <div class="ride-list">
+          <span class="ride hl">Rise of the Resistance (LLSP)</span>
+          <span class="ride hl">Tower of Terror</span>
+          <span class="ride hl">Slinky Dog Dash</span>
+          <span class="ride">Millennium Falcon</span>
+          <span class="ride">Toy Story Mania</span>
+          <span class="ride">Runaway Railway</span>
+        </div>
+        <div style="font-weight:600;font-size:14px;margin:16px 0 8px;">Schedule:</div>
+        <div class="schedule-item"><span class="sched-time">7:00 AM</span><span class="sched-desc">Uber to Hollywood Studios (~$16, 12 min)</span></div>
+        <div class="schedule-item"><span class="sched-time">8:30 AM</span><span class="sched-desc">Rope drop — Millennium Falcon (she pilots!), then Toy Story Land</span></div>
+        <div class="schedule-item"><span class="sched-time">9:30 AM</span><span class="sched-desc">Slinky Dog Dash → Toy Story Mania → Alien Saucers → Runaway Railway</span></div>
+        <div class="schedule-item"><span class="sched-time">10:30 AM</span><span class="sched-desc">Frozen Sing-Along (air-conditioned, 30 min)</span></div>
+        <div class="schedule-item"><span class="sched-time">12:00 PM</span><span class="sched-desc">Lunch at Woody's Lunch Box. Uber to hotel for pool break.</span></div>
+        <div class="schedule-item"><span class="sched-time">2:30 PM</span><span class="sched-desc">Uber back. Rise of the Resistance via LLSP — best ride at Disney World.</span></div>
+        <div class="schedule-item"><span class="sched-time">4:00 PM</span><span class="sched-desc">Star Tours + Galaxy's Edge exploring + Tower of Terror</span></div>
+        <div class="schedule-item"><span class="sched-time">5:30 PM</span><span class="sched-desc">Dinner at Sci-Fi Dine-In Theater (eat in a 1950s car!)</span></div>
+        <div class="schedule-item"><span class="sched-time">8:30 PM</span><span class="sched-desc">Fantasmic! show → Uber home</span></div>
+        <div class="uber-note">&#9679; Midday hotel break via Uber: ~$32 round-trip. Rise of the Resistance is the afternoon highlight.</div>
+      </div>
+    </div>
+
+    <!-- Day 5 -->
+    <div class="day-card" onclick="toggleDay(this)">
+      <div class="day-header">
+        <div class="day-num" style="background:#E3EFFA;color:#185FA5;">5</div>
+        <div class="day-meta">
+          <div class="day-date">Tuesday, May 12</div>
+          <div class="day-title">Magic Kingdom — TRON day</div>
+        </div>
+        <div class="day-badge" style="background:#E3EFFA;color:#185FA5;">Lowest crowd day</div>
+        <svg class="day-arrow" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"/></svg>
+      </div>
+      <div class="day-body">
+        <div style="font-weight:600;font-size:14px;margin-bottom:8px;">Headliner rides:</div>
+        <div class="ride-list">
+          <span class="ride hl">TRON Lightcycle/Run (LLSP)</span>
+          <span class="ride hl">Seven Dwarfs Mine Train</span>
+          <span class="ride hl">Space Mountain</span>
+          <span class="ride hl">Big Thunder Mountain</span>
+          <span class="ride">Tiana's Bayou Adventure</span>
+          <span class="ride">Haunted Mansion</span>
+          <span class="ride">Pirates of the Caribbean</span>
+        </div>
+        <div style="font-weight:600;font-size:14px;margin:16px 0 8px;">Schedule (no hotel break — monorail makes it impractical):</div>
+        <div class="schedule-item"><span class="sched-time">6:45 AM</span><span class="sched-desc">Uber to TTC (~$18, 13 min) → monorail to Magic Kingdom</span></div>
+        <div class="schedule-item"><span class="sched-time">9:00 AM</span><span class="sched-desc">Rope drop — sprint to Seven Dwarfs Mine Train, then Peter Pan</span></div>
+        <div class="schedule-item"><span class="sched-time">10:00 AM</span><span class="sched-desc">TRON via LLSP return window (your #1 ride!)</span></div>
+        <div class="schedule-item"><span class="sched-time">10:30 AM</span><span class="sched-desc">Space Mountain → Big Thunder → Tiana's → Buzz Lightyear</span></div>
+        <div class="schedule-item"><span class="sched-time">11:30 AM</span><span class="sched-desc">Lunch at Columbia Harbour House (secret upstairs seating)</span></div>
+        <div class="schedule-item"><span class="sched-time">12:30 PM</span><span class="sched-desc">Carousel of Progress + PeopleMover (cool-down rides)</span></div>
+        <div class="schedule-item"><span class="sched-time">2:00 PM</span><span class="sched-desc">Haunted Mansion → It's a Small World → Winnie the Pooh → Dumbo</span></div>
+        <div class="schedule-item"><span class="sched-time">3:00 PM</span><span class="sched-desc">Festival of Fantasy Parade</span></div>
+        <div class="schedule-item"><span class="sched-time">5:00 PM</span><span class="sched-desc">Princess Fairytale Hall + Dole Whip at Aloha Isle</span></div>
+        <div class="schedule-item"><span class="sched-time">5:30 PM</span><span class="sched-desc">Dinner at Liberty Tree Tavern (or Cinderella's Royal Table)</span></div>
+        <div class="schedule-item"><span class="sched-time">9:15 PM</span><span class="sched-desc">Happily Ever After fireworks on Main Street U.S.A.</span></div>
+        <div class="schedule-item"><span class="sched-time">9:45 PM</span><span class="sched-desc">Re-ride TRON (lines drop to 15 min after fireworks!)</span></div>
+        <div class="schedule-item"><span class="sched-time">10:15 PM</span><span class="sched-desc">Monorail to TTC → Uber home. Wait 15 min after fireworks to avoid surge.</span></div>
+        <div class="uber-note">&#9679; MK has no Uber pickup. You must monorail/ferry to TTC first (~15 min each way).</div>
+      </div>
+    </div>
+
+    <!-- Day 6 -->
+    <div class="day-card" onclick="toggleDay(this)">
+      <div class="day-header">
+        <div class="day-num" style="background:#F1EFE8;color:#5F5E5A;">6</div>
+        <div class="day-meta">
+          <div class="day-date">Wednesday, May 13</div>
+          <div class="day-title">Departure</div>
+        </div>
+        <div class="day-badge" style="background:#F1EFE8;color:var(--text-muted);">No park</div>
+        <svg class="day-arrow" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"/></svg>
+      </div>
+      <div class="day-body">
+        <div class="schedule-item"><span class="sched-time">7:30 AM</span><span class="sched-desc">Sleep in. Final hotel breakfast.</span></div>
+        <div class="schedule-item"><span class="sched-time">9:00 AM</span><span class="sched-desc">Check out. Uber to MCO (~$35, 25 min).</span></div>
+        <div class="schedule-item"><span class="sched-time">10:00+ AM</span><span class="sched-desc">Flight home to Austin.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Hotel -->
+<section id="hotel">
+  <div class="container">
+    <div class="section-label">Where you're staying</div>
+    <div class="section-title">Home2 Suites — Flamingo Crossings</div>
+    <div class="section-desc">Disney's budget-friendly western gateway. 8 minutes to Animal Kingdom, 12 to EPCOT. Roughly half the price of a Disney resort.</div>
+    <div class="hotel-card">
+      <div class="hotel-top">
+        <h3>Home2 Suites by Hilton</h3>
+        <p>Flamingo Crossings Town Center &middot; $100–$140/night &middot; ~$500–$700 for 5 nights</p>
+      </div>
+      <div class="hotel-perks">
+        <div class="perk"><div class="perk-icon">&#10003;</div><span>Free hot breakfast daily (Mickey waffles!)</span></div>
+        <div class="perk"><div class="perk-icon">&#10003;</div><span>Suite with kitchenette</span></div>
+        <div class="perk"><div class="perk-icon">&#10003;</div><span>Pool with waterslide</span></div>
+        <div class="perk"><div class="perk-icon">&#10003;</div><span>Target within walking distance</span></div>
+        <div class="perk"><div class="perk-icon">&#10003;</div><span>Free parking &amp; Wi-Fi</span></div>
+        <div class="perk"><div class="perk-icon">&#10003;</div><span>Fireworks visible from some rooms</span></div>
+      </div>
+      <div class="hotel-warn">
+        <strong>Trade-offs vs. Disney resorts:</strong> No Early Entry (30 min early park access), no 7-day Lightning Lane booking, no free Disney transportation. Uber or rental car needed.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Rides -->
+<section id="rides" style="background:var(--bg-accent);padding:48px 0;">
+  <div class="container">
+    <div class="section-label">Thrill guide</div>
+    <div class="section-title">Headliner rides ranked</div>
+    <div class="section-desc">At 48–50 inches (typical for age 7), she clears every height requirement. Sorted by thrill level — gauge her comfort and let her opt out of anything.</div>
+    <div class="card" style="overflow-x:auto;">
+      <table class="ride-table">
+        <thead><tr><th>Ride</th><th>Park</th><th>Thrill</th><th>Height</th></tr></thead>
+        <tbody>
+          <tr><td><strong>TRON Lightcycle/Run</strong></td><td>MK</td><td><div class="thrill-bar"><div class="thrill-dot on"></div><div class="thrill-dot on"></div><div class="thrill-dot on"></div><div class="thrill-dot on"></div><div class="thrill-dot on"></div></div></td><td>48"</td></tr>
+          <tr><td><strong>Guardians: Cosmic Rewind</strong></td><td>EPCOT</td><td><div class="thrill-bar"><div class="thrill-dot on"></div><div class="thrill-dot on"></div><div class="thrill-dot on"></div><div class="thrill-dot on"></div><div class="thrill-dot on"></div></div></td><td>42"</td></tr>
+          <tr><td><strong>Rise of the Resistance</strong></td><td>HS</td><td><div class="thrill-bar"><div class="thrill-dot on"></div><div class="thrill-dot on"></div><div class="thrill-dot on"></div><div class="thrill-dot on"></div><div class="thrill-dot"></div></div></td><td>40"</td></tr>
+          <tr><td><strong>Expedition Everest</strong></td><td>AK</td><td><div class="thrill-bar"><div class="thrill-dot on"></div><div class="thrill-dot on"></div><div class="thrill-dot on"></div><div class="thrill-dot on"></div><div class="thrill-dot"></div></div></td><td>44"</td></tr>
+          <tr><td><strong>Tower of Terror</strong></td><td>HS</td><td><div class="thrill-bar"><div class="thrill-dot on"></div><div class="thrill-dot on"></div><div class="thrill-dot on"></div><div class="thrill-dot on"></div><div class="thrill-dot"></div></div></td><td>40"</td></tr>
+          <tr><td><strong>Space Mountain</strong></td><td>MK</td><td><div class="thrill-bar"><div class="thrill-dot on"></div><div class="thrill-dot on"></div><div class="thrill-dot on"></div><div class="thrill-dot"></div><div class="thrill-dot"></div></div></td><td>44"</td></tr>
+          <tr><td><strong>Slinky Dog Dash</strong></td><td>HS</td><td><div class="thrill-bar"><div class="thrill-dot on"></div><div class="thrill-dot on"></div><div class="thrill-dot on"></div><div class="thrill-dot"></div><div class="thrill-dot"></div></div></td><td>38"</td></tr>
+          <tr><td><strong>Big Thunder Mountain</strong></td><td>MK</td><td><div class="thrill-bar"><div class="thrill-dot on"></div><div class="thrill-dot on"></div><div class="thrill-dot on"></div><div class="thrill-dot"></div><div class="thrill-dot"></div></div></td><td>38"</td></tr>
+          <tr><td><strong>Test Track</strong></td><td>EPCOT</td><td><div class="thrill-bar"><div class="thrill-dot on"></div><div class="thrill-dot on"></div><div class="thrill-dot on"></div><div class="thrill-dot"></div><div class="thrill-dot"></div></div></td><td>40"</td></tr>
+          <tr><td><strong>Flight of Passage</strong></td><td>AK</td><td><div class="thrill-bar"><div class="thrill-dot on"></div><div class="thrill-dot on"></div><div class="thrill-dot on"></div><div class="thrill-dot"></div><div class="thrill-dot"></div></div></td><td>44"</td></tr>
+          <tr><td><strong>Seven Dwarfs Mine Train</strong></td><td>MK</td><td><div class="thrill-bar"><div class="thrill-dot on"></div><div class="thrill-dot on"></div><div class="thrill-dot"></div><div class="thrill-dot"></div><div class="thrill-dot"></div></div></td><td>38"</td></tr>
+          <tr><td><strong>Millennium Falcon</strong></td><td>HS</td><td><div class="thrill-bar"><div class="thrill-dot on"></div><div class="thrill-dot on"></div><div class="thrill-dot"></div><div class="thrill-dot"></div><div class="thrill-dot"></div></div></td><td>38"</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- Tickets -->
+<section id="tickets">
+  <div class="container">
+    <div class="section-label">Tickets &amp; Lightning Lane</div>
+    <div class="section-title">What to buy and when</div>
+    <div class="section-desc">Multi-day tickets, Lightning Lane Multi Pass, and two must-buy Single Pass rides.</div>
+    <div class="card">
+      <div style="font-weight:600;font-size:16px;margin-bottom:12px;">4-day base tickets</div>
+      <div style="font-size:14px;margin-bottom:16px;">Adult ~$560 + Child ~$540 before tax. <strong>Total: ~$1,108–$1,214 after tax.</strong><br>Buy through Undercover Tourist or Get Away Today (code DTB5) for ~4% savings.</div>
+      <div style="font-weight:600;font-size:16px;margin-bottom:12px;">Lightning Lane must-buys</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+        <span class="ride hl">TRON LLSP — $40–$50 for two</span>
+        <span class="ride hl">Rise of the Resistance LLSP — $40–$50 for two</span>
+      </div>
+      <div style="font-size:14px;margin-bottom:16px;">Lightning Lane Multi Pass: $15–$28/person/day. Book 3 days before each park day at 7:00 AM ET. <strong>Total LL budget: ~$150–$280</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- Dining -->
+<section id="dining" style="background:var(--bg-accent);padding:48px 0;">
+  <div class="container">
+    <div class="section-label">Dining</div>
+    <div class="section-title">Where to eat</div>
+    <div class="section-desc">Free hotel breakfast covers mornings. One character meal for the princess experience. Quick-service for everything else.</div>
+    <div class="card card-sm" style="border-left:4px solid var(--teal);">
+      <div style="font-weight:600;font-size:14px;color:var(--teal);">Best quick-service by park</div>
+      <div style="font-size:14px;margin-top:6px;">
+        <strong>AK:</strong> Satu'li Canteen &middot; <strong>EPCOT:</strong> Les Halles (France) &middot; <strong>HS:</strong> Woody's Lunch Box &middot; <strong>MK:</strong> Columbia Harbour House
+      </div>
+    </div>
+    <div class="card card-sm" style="border-left:4px solid var(--purple);">
+      <div style="font-weight:600;font-size:14px;color:var(--purple);">Character dining (book 60 days ahead at 6 AM ET)</div>
+      <div style="font-size:14px;margin-top:6px;">
+        <strong>Garden Grill</strong> (EPCOT) — Mickey, Pluto, Chip &amp; Dale — ~$62/$39<br>
+        <strong>Cinderella's Royal Table</strong> (MK) — princesses inside the castle — ~$88/$52
+      </div>
+    </div>
+    <div class="card card-sm" style="border-left:4px solid var(--gold);">
+      <div style="font-weight:600;font-size:14px;color:var(--gold);">Must-try snacks</div>
+      <div style="font-size:14px;margin-top:6px;">
+        Dole Whip (MK) &middot; Mickey Ice Cream Bar &middot; Karamell-K&uuml;che caramels (EPCOT Germany) &middot; Ronto Wrap (HS Galaxy's Edge) &middot; Mickey Pretzel
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Budget -->
+<section id="budget">
+  <div class="container">
+    <div class="section-label">Budget</div>
+    <div class="section-title">What it all costs</div>
+    <div class="section-desc">Estimated total for one adult and one child (age 7), five nights.</div>
+    <div class="card">
+      <table class="budget-table">
+        <thead><tr><th>Category</th><th>Estimate</th></tr></thead>
+        <tbody>
+          <tr><td>Round-trip flights (AUS &#8594; MCO)</td><td>$400–$700</td></tr>
+          <tr><td>Home2 Suites (5 nights)</td><td>$500–$700</td></tr>
+          <tr><td>Uber/Lyft (14 rides total)</td><td>$204–$330</td></tr>
+          <tr><td>4-day park tickets (after tax)</td><td>$1,108–$1,214</td></tr>
+          <tr><td>Lightning Lane (LLMP + LLSP)</td><td>$150–$280</td></tr>
+          <tr><td>Dining (free breakfast + QS + 1 character meal)</td><td>$350–$550</td></tr>
+          <tr><td>Souvenirs &amp; extras</td><td>$75–$200</td></tr>
+        </tbody>
+        <tr class="budget-total"><td>Estimated total</td><td>$2,787–$3,974</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- Checklist -->
+<section id="checklist" style="background:var(--bg-accent);padding:48px 0;">
+  <div class="container">
+    <div class="section-label">Action items</div>
+    <div class="section-title">Booking checklist</div>
+    <div class="section-desc">Tap to check off. Your progress is saved in your browser.</div>
+
+    <div class="card">
+      <div class="check-group">
+        <div class="check-group-title">Now (6+ weeks out)</div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span class="check-label">Book flights on Southwest.com</span></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span class="check-label">Book Home2 Suites via Hilton.com</span></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span class="check-label">Buy 4-day park tickets (Undercover Tourist or Get Away Today)</span></div>
+      </div>
+      <div class="check-group">
+        <div class="check-group-title">March 10–13 at 6 AM ET</div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span class="check-label">Book character dining (Garden Grill or CRT)</span></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span class="check-label">Book Sci-Fi Dine-In Theater (May 11)</span></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span class="check-label">Book Liberty Tree Tavern (May 12)</span></div>
+      </div>
+      <div class="check-group">
+        <div class="check-group-title">Late April</div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span class="check-label">Buy Disney gift cards at Target (5% off with RedCard)</span></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span class="check-label">Order ponchos, glow sticks, portable fan (Amazon)</span></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span class="check-label">Download My Disney Experience app + link tickets</span></div>
+      </div>
+      <div class="check-group">
+        <div class="check-group-title">May 5–8 at 7 AM ET</div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span class="check-label">Book Lightning Lane Multi Pass (3 days before each park day)</span></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span class="check-label">Buy LLSP: TRON (May 12) + Rise of the Resistance (May 11)</span></div>
+      </div>
+      <div class="check-group">
+        <div class="check-group-title">Packing day (May 7)</div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span class="check-label">Ponchos, sunscreen SPF 50+, hats, refillable water bottles</span></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span class="check-label">Portable charger, autograph book, thick Sharpie</span></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span class="check-label">Matching dad-daughter Disney shirts</span></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span class="check-label">Lightweight drawstring bag (not a heavy backpack)</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Tips -->
+<section id="tips">
+  <div class="container">
+    <div class="section-label">Pro tips</div>
+    <div class="section-title">Things first-timers forget</div>
+
+    <div class="tip-card">
+      <div class="tip-title">Schedule every morning Uber the night before</div>
+      <div class="tip-text">Flamingo Crossings has fewer available drivers than central Disney. Scheduled rides are far more reliable than on-demand morning requests.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-title">Free ice water at any counter</div>
+      <div class="tip-text">Just ask at any quick-service restaurant. Disney charges $3.50+ for bottled water. Stay aggressively hydrated — May heat is 87–90°F.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-title">Mobile order everything</div>
+      <div class="tip-text">Place food orders through the My Disney Experience app 30–60 minutes before you want to eat. Saves 15–30 minutes of line standing.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-title">The 9:45 PM TRON re-ride</div>
+      <div class="tip-text">After Happily Ever After fireworks, half the park leaves. TRON waits drop from 60+ to 15 minutes. Ride it again in the dark with neon blazing. This is the moment she'll remember forever.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-title">Midday breaks are non-negotiable</div>
+      <div class="tip-text">On AK and HS days, Uber back to the hotel for pool time between noon and 2:30 PM. On EPCOT and MK days, rest inside air-conditioned attractions. Prevents meltdowns and heat exhaustion.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-title">Magic Kingdom Uber warning</div>
+      <div class="tip-text">MK has no rideshare pickup. You must monorail or ferry to the Transportation & Ticket Center (~15 min), then Uber from TTC. Budget extra time when leaving. Wait 15 min after fireworks to avoid surge pricing.</div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  Built with love for a dad-daughter Disney adventure &middot; May 2026
+</footer>
+
+<script>
+function toggleDay(el) {
+  const wasOpen = el.classList.contains('open');
+  document.querySelectorAll('.day-card').forEach(d => d.classList.remove('open'));
+  if (!wasOpen) el.classList.add('open');
+}
+
+function toggleCheck(el) {
+  el.classList.toggle('done');
+  saveChecklist();
+}
+
+function saveChecklist() {
+  const items = document.querySelectorAll('.check-item');
+  const state = Array.from(items).map(i => i.classList.contains('done'));
+  try { localStorage.setItem('disney-checklist', JSON.stringify(state)); } catch(e) {}
+}
+
+function loadChecklist() {
+  try {
+    const state = JSON.parse(localStorage.getItem('disney-checklist'));
+    if (state) {
+      const items = document.querySelectorAll('.check-item');
+      items.forEach((item, i) => { if (state[i]) item.classList.add('done'); });
+    }
+  } catch(e) {}
+}
+
+loadChecklist();
+
+const navLinks = document.querySelectorAll('.nav-link');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const target = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+      if (target) target.classList.add('active');
+    }
+  });
+}, { rootMargin: '-40% 0px -55% 0px' });
+document.querySelectorAll('section[id]').forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
